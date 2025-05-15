@@ -81,9 +81,27 @@ This project aims to develop a user-friendly, browser-based Integrated Developme
 
 ## Database Structure
 
-### Core Files
+### File Management System
+The database files are managed through a centralized configuration system that defines their structure, purpose, and creation parameters. Each file is defined in the configuration with:
+- Standardized purpose mapping
+- Creation and removal commands
+- File attributes and metadata
+- Version tracking
+- Access control settings
+
+Files are automatically created during account initialization using the configuration settings. The system supports:
+- Dynamic file creation based on configuration
+- Standardized file purposes
+- Automatic X record management for release information
+- File validation and error handling
+- Version tracking through X records
+
+### Core Files Structure
+The following files are managed through the configuration system and created during account initialization:
 
 FILENAME: MVEDITOR.WORKSPACE
+Purpose: Workspace Management
+Attributes:
 - ID: Workspace ID
 - NAME: Workspace Name
 - OWNER: User ID
@@ -220,6 +238,43 @@ FILENAME: MVEDITOR.DOCS
 - MODIFIED: Timestamp
 - TAGS: Multi-value list of tags
 
+### File Creation Process
+1. Configuration Loading:
+   - Load file definitions from `database_config.json`
+   - Validate file configurations
+   - Map file purposes to standardized types
+   - Prepare creation commands
+
+2. Account Initialization:
+   - Create files based on configuration
+   - Apply standardized attributes
+   - Set up X records for version tracking
+   - Validate file creation
+   - Handle errors and rollback if needed
+
+3. File Management:
+   - Track file status and versions
+   - Manage file access and permissions
+   - Handle file modifications
+   - Maintain audit logs
+   - Support file removal when needed
+
+### File Purpose Standardization
+Each file has a standardized purpose defined in the configuration:
+- WORKSPACE: Workspace management and organization
+- FILES: File system and content management
+- HISTORY: Version history and change tracking
+- PERMISSIONS: Access control and user rights
+- SESSIONS: User session management
+- SETTINGS: System and user preferences
+- COLLABORATION: Real-time collaboration features
+- GIT: Version control integration
+- AUDIT: System audit logging
+- LOGS: Application logging
+- CACHE: Performance optimization
+- TESTS: Testing and validation
+- DOCS: Documentation management
+
 ## System Configuration
 
 ### Connection Management
@@ -292,6 +347,36 @@ BACKUP_RETENTION_DAYS = 30
 MAINTENANCE_WINDOW_START = "02:00"  # UTC
 MAINTENANCE_WINDOW_DURATION = 120  # minutes
 PERFORMANCE_METRICS_INTERVAL = 300  # 5 minutes
+
+## [UPDATE] Database Configuration System
+- Implemented a new configuration management system using Pydantic models
+- Created a centralized configuration class (`DatabaseConfig`) to manage all database settings
+- Standardized file purposes through a mapping system
+- Added proper type validation and error handling
+- Implemented X record management for release information
+- Configuration is now loaded at application startup and managed globally
+
+### Configuration Structure
+1. File Configuration (`FileConfig`):
+   - Manages individual file settings
+   - Includes filename, description, create/remove commands
+   - Maps to standardized purposes (workspace, files, history, etc.)
+
+2. Account Configuration (`DatabaseAccount`):
+   - Manages database connection settings
+   - Includes connection pooling parameters
+   - Handles active/inactive status
+
+3. Release Information (`ReleaseInfo`):
+   - Manages version information
+   - Stores release dates and notes
+   - Used for X record creation in VOC
+
+### Configuration Loading
+- Configuration is loaded from `database_config.json`
+- File purposes are automatically mapped during loading
+- Global configuration instance is maintained
+- Proper error handling and logging implemented
 
 ## Implementation Guidelines
 
